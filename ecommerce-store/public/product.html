@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1 id="name"></h1>
+<img id="image">
+<p id="price"></p>
+<button onclick="addToCart()">Add to Cart</button>
+
+<script>
+const id = new URLSearchParams(window.location.search).get("id");
+
+fetch(`/api/products/${id}`)
+.then(res => res.json())
+.then(p => {
+    document.getElementById("name").innerText = p.name;
+    document.getElementById("price").innerText = p.price;
+    document.getElementById("image").src = p.image;
+});
+
+function addToCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push(id);
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Added to cart");
+}
+</script>
+</body>
+</html>

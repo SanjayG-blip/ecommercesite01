@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Cart</h1>
+<ul id="cart"></ul>
+<button onclick="order()">Place Order</button>
+
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+document.getElementById("cart").innerHTML = cart.map(i => `<li>Product ID: ${i}</li>`).join("");
+
+function order() {
+    fetch("/api/order", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({cart})
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+        localStorage.removeItem("cart");
+    });
+}
+</script>
+</body>
+</html>
